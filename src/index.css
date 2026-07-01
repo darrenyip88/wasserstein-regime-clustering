@@ -1,0 +1,518 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   DESIGN TOKENS
+   Palette: Charcoal · Parchment · Forest · Terracotta · Amber
+   ───────────────────────────────────────────────────────────────────────────── */
+:root {
+  /* ── Backgrounds — warm charcoal, not cold navy ── */
+  --bg-base:        #0f0f0e;
+  --bg-surface:     #161614;
+  --bg-elevated:    #1e1d1a;
+  --bg-hover:       #232220;
+  --bg-subtle:      #131311;
+
+  /* ── Borders — warmer undertone ── */
+  --border-hair:    rgba(255,248,235,0.04);
+  --border-subtle:  rgba(255,248,235,0.07);
+  --border-soft:    rgba(255,248,235,0.11);
+  --border-mid:     rgba(255,248,235,0.17);
+
+  /* ── Text — warm parchment hierarchy ──
+     All at comfortable contrast ratios on bg-base (#0f0f0e):
+     primary  → ~13:1   ✓
+     secondary → ~6.5:1 ✓
+     muted    → ~4.2:1  ✓ (AA on large text)
+     faint    → ~2.2:1  for decorative only ── */
+  --text-primary:   #f0ece4;
+  --text-secondary: #b8b0a2;
+  --text-muted:     #7d756a;
+  --text-faint:     #3d3830;
+
+  /* ── Regime palette — premium, warm, semantically clear ── */
+
+  /* Bull: Forest green — calm confidence */
+  --bull:           #6bb887;
+  --bull-mid:       #4a9467;
+  --bull-dim:       rgba(107,184,135,0.09);
+  --bull-border:    rgba(107,184,135,0.20);
+  --bull-glow:      rgba(107,184,135,0.13);
+
+  /* Bear: Terracotta — measured urgency */
+  --bear:           #d47c62;
+  --bear-mid:       #b05840;
+  --bear-dim:       rgba(212,124,98,0.09);
+  --bear-border:    rgba(212,124,98,0.20);
+  --bear-glow:      rgba(212,124,98,0.13);
+
+  /* Crisis: Dusty amber — alert, not alarm */
+  --crisis:         #c9984a;
+  --crisis-mid:     #a07530;
+  --crisis-dim:     rgba(201,152,74,0.09);
+  --crisis-border:  rgba(201,152,74,0.20);
+
+  /* Calm: Muted sage-slate — quiet, restrained */
+  --calm:           #7a9eb5;
+  --calm-mid:       #567d96;
+  --calm-dim:       rgba(122,158,181,0.09);
+  --calm-border:    rgba(122,158,181,0.20);
+
+  /* Mixed/neutral: Warm stone */
+  --mixed:          #a89880;
+  --mixed-dim:      rgba(168,152,128,0.09);
+  --mixed-border:   rgba(168,152,128,0.20);
+
+  /* ── Accent: Warm amber — single UI chrome color ── */
+  --accent:         #c49a50;
+  --accent-soft:    #a07a38;
+  --accent-dim:     rgba(196,154,80,0.10);
+  --accent-border:  rgba(196,154,80,0.22);
+
+  /* ── Typography ── */
+  --font-display: "Instrument Serif", "Georgia", serif;
+  --font-sans:    "Manrope", system-ui, -apple-system, sans-serif;
+  --font-mono:    "JetBrains Mono", "Fira Code", monospace;
+
+  /* ── Spacing ── */
+  --space-xs:  8px;
+  --space-sm:  16px;
+  --space-md:  24px;
+  --space-lg:  40px;
+  --space-xl:  64px;
+  --space-2xl: 96px;
+
+  /* ── Radius ── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   RESET & BASE
+   ───────────────────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.65;
+  font-weight: 400;
+  overflow-x: hidden;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   SCROLLBAR
+   ───────────────────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--text-faint); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   TYPOGRAPHY — clean, readable, premium hierarchy
+   ───────────────────────────────────────────────────────────────────────────── */
+.font-display { font-family: var(--font-display); }
+.font-sans    { font-family: var(--font-sans); }
+.font-mono    { font-family: var(--font-mono); }
+
+/* Eyebrow: small section label — Manrope, not mono, not overtracked */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Display heading — Instrument Serif for hero moments */
+.display-xl {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.display-lg {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3.2vw, 40px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+  color: var(--text-primary);
+}
+
+.display-md {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.2vw, 30px);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+/* Body prose — Manrope, comfortable reading weight */
+.body-lg {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+
+.body-md {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.body-sm {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   CARD PRIMITIVES
+   ───────────────────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.card-elevated {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+}
+
+.card-ghost {
+  background: transparent;
+  border: 1px solid var(--border-hair);
+  border-radius: var(--radius-lg);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   PILL / TAG — Manrope, lighter tracking
+   ───────────────────────────────────────────────────────────────────────────── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   METRIC DISPLAY
+   ───────────────────────────────────────────────────────────────────────────── */
+.metric-num {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.metric-label {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.metric-sub {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-faint);
+  letter-spacing: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   THIN RULE
+   ───────────────────────────────────────────────────────────────────────────── */
+.section-rule {
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.35;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ANIMATIONS
+   ───────────────────────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+.fade-up   { animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) both; }
+.fade-in   { animation: fadeIn 0.5s ease both; }
+.fade-up-1 { animation-delay: 0.08s; }
+.fade-up-2 { animation-delay: 0.17s; }
+.fade-up-3 { animation-delay: 0.28s; }
+.fade-up-4 { animation-delay: 0.38s; }
+.fade-up-5 { animation-delay: 0.48s; }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   RECHARTS OVERRIDES
+   ───────────────────────────────────────────────────────────────────────────── */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: rgba(255,248,235,0.04) !important;
+}
+
+.recharts-tooltip-cursor {
+  stroke: rgba(255,248,235,0.06) !important;
+}
+
+.recharts-surface { overflow: visible; }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   BACKGROUND TEXTURE — warm dot grid
+   ───────────────────────────────────────────────────────────────────────────── */
+.dot-grid {
+  background-image: radial-gradient(
+    circle,
+    rgba(255,248,235,0.035) 1px,
+    transparent 1px
+  );
+  background-size: 44px 44px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   LINK
+   ───────────────────────────────────────────────────────────────────────────── */
+a.link-accent {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-border);
+  transition: border-color 0.2s;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+}
+a.link-accent:hover { border-color: var(--accent); }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   HOVER LIFT
+   ───────────────────────────────────────────────────────────────────────────── */
+.hover-lift {
+  transition: transform 0.28s cubic-bezier(0.22,1,0.36,1),
+              box-shadow 0.28s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 44px rgba(0,0,0,0.38);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   CANVAS WRAP
+   ───────────────────────────────────────────────────────────────────────────── */
+.canvas-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-base);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   TABULAR NUMS
+   ───────────────────────────────────────────────────────────────────────────── */
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   SECTION SPACING
+   ───────────────────────────────────────────────────────────────────────────── */
+.section {
+  padding-top: var(--space-2xl);
+  padding-bottom: var(--space-xl);
+}
+
+.section-sm {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-lg);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   NAV LINK — Manrope, not mono
+   ───────────────────────────────────────────────────────────────────────────── */
+.nav-link {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 7px;
+  letter-spacing: 0.01em;
+  transition: color 0.18s, background 0.18s;
+}
+.nav-link:hover {
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   CTA BUTTON — warmer, less stark
+   ───────────────────────────────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 13px 32px;
+  border-radius: var(--radius-md);
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.22s, border-color 0.22s, color 0.22s;
+}
+.btn-primary:hover {
+  background: rgba(196,154,80,0.17);
+  border-color: rgba(196,154,80,0.40);
+  color: #d4aa68;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   STAT ROW — Manrope labels
+   ───────────────────────────────────────────────────────────────────────────── */
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-hair);
+}
+.stat-row:last-child { border-bottom: none; }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   INLINE INSIGHT TAG
+   ───────────────────────────────────────────────────────────────────────────── */
+.insight-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 6px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   LOADING BAR
+   ───────────────────────────────────────────────────────────────────────────── */
+@keyframes loadingPulse {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   PROSE BLOCK — for body text passages
+   ───────────────────────────────────────────────────────────────────────────── */
+.prose {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+
+.prose-sm {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   CODE / FORMULA — mono only for actual code or math
+   ───────────────────────────────────────────────────────────────────────────── */
+.formula {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.code-sm {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0;
+  color: var(--text-muted);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   DATA VALUE — monospace for numbers in context
+   ───────────────────────────────────────────────────────────────────────────── */
+.data-value {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   SECTION DIVIDER
+   ───────────────────────────────────────────────────────────────────────────── */
+.section-divider {
+  height: 1px;
+  background: var(--border-hair);
+  margin: 0;
+}
